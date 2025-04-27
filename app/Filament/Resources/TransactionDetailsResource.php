@@ -54,7 +54,6 @@ class TransactionDetailsResource extends Resource
                     ->label('Quantity')
                     ->numeric()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('MsMenu.menuprice')
                     ->label('Menu Price')
                     ->money('IDR')

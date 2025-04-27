@@ -7,7 +7,5 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
 Route::get('/', HomePage::class);
-
-Route::get('/checkout', CheckoutPage::class);
-
-Route::get('/payment/success', PaymentSuccessPage::class);
+Route::get('/checkout-page', CheckoutPage::class);
+Route::get('/payment-success', PaymentSuccessPage::class);

@@ -23,6 +23,9 @@ class ListTransactionDetails extends ListRecords
     {
         $transactionid = request()->route('parent');
 
-        return TransactionDetail::query()->where('transactionid', $transactionid);
+        return TransactionDetail::query()
+            ->where('transactionid', $transactionid)
+            ->with('MsMenu')
+            ->with('TransactionHeader');
     }
 }

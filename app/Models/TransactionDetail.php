@@ -28,7 +28,7 @@ class TransactionDetail extends Model
 
     public function MsMenu()
     {
-        return $this->belongsTo(MsMenu::class, 'menuid', 'menuid');
+        return $this->hasOne(MsMenu::class, 'menuid', 'menuid');
     }
 
     public function getKeyName()
