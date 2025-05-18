@@ -64,31 +64,35 @@ class CheckoutPage extends Component
     public function checkout()
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email|max:255',
+        'name' => 'required|string|max:255',
+        'phone' => ['required', 'regex:/^08\d{9,11}$/'],
+        'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/'],
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
+           'phone.regex' => 'Panjang nomor telepon harus 11-13 digit dan diawali 08.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.regex' => 'Email harus diakhiri dengan @gmail.com.',
         ]);
 
         if (empty($this->cartItems)) {
-            $this->addError('cartItems', 'Please select at least one item to proceed.');
+            $this->addError('cartItems', 'Silakan pilih setidaknya satu item untuk melanjutkan.');
             return;
         }
 
-        // Simpan data pelanggan
         $user = MsUser::create([
             'username' => $this->name,
             'userphonenumber' => $this->phone,
             'useremail' => $this->email,
         ]);
 
-        // Simpan data transaksi ke tabel transactionheader
         $transaction = TransactionHeader::create([
             'transactiondate' => Carbon::now(),
             'paymentstatus' => 'SUCCESS',
             'userid' => $user->userid,
         ]);
 
-        // Simpan detail transaksi ke tabel transactiondetail
         foreach ($this->cartItems as $item) {
             TransactionDetail::create([
                 'transactionid' => $transaction->transactionid,
@@ -97,13 +101,10 @@ class CheckoutPage extends Component
             ]);
         }
 
-        // Hapus session cart_items
         session()->forget('cart_items');
 
-        // Reset cartItems setelah transaksi selesai
         $this->cartItems = [];
 
-        // Redirect ke halaman sukses
         return redirect('/payment-success');
     }
 

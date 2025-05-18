@@ -10,16 +10,7 @@ class TransactionDetail extends Model
     use HasFactory;
 
     protected $table = 'transaction_details';
-    protected $primaryKey = ['transactionid', 'menuid'];
-    public $incrementing = false;
     protected $fillable = ['transactionid', 'menuid', 'quantity'];
-
-    protected $appends = ['key'];
-
-    public function getKeyAttribute(): string
-    {
-        return $this->transactionid . '-' . $this->menuid;
-    }
 
     public function TransactionHeader()
     {
@@ -29,10 +20,5 @@ class TransactionDetail extends Model
     public function MsMenu()
     {
         return $this->hasOne(MsMenu::class, 'menuid', 'menuid');
-    }
-
-    public function getKeyName()
-    {
-        return 'transactionid';
     }
 }

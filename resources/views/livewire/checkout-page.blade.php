@@ -36,8 +36,19 @@
                 <section>
                     <h3 class="font-inter font-bold text-[#000000] text-[18px] pt-[10px] pl-[20px] mt-[6px] mb-[0px] bg-[#FFFFFF]">Data Pelanggan</h3>
                     <form wire:submit.prevent="checkout" class="space-y-4 bg-[#FFFFFF] pt-[10px] pb-[10px]">
+                        @error('name')
+                            <span class="text-[#FF0000] text-[14px] mx-[20px]">{{ $message }}</span>
+                        @enderror
                         <input type="text" wire:model="name" placeholder="Nama" class="mb-[20px] h-[42px] w-[345px] rounded-[8px] pl-16 pr-4 text-black placeholder:font-semibold placeholder:text-[#BFBFBF] mx-[20px] px-[20px]">
+
+                        @error('phone')
+                            <span class="text-[#FF0000] text-[14px] mx-[20px]">{{ $message }}</span>
+                        @enderror
                         <input type="text" wire:model="phone" placeholder="No. HP" class="mb-[20px] h-[42px] w-[345px] rounded-[8px] pl-16 pr-4 text-black placeholder:font-semibold placeholder:text-[#BFBFBF] mx-[20px] px-[20px]">
+
+                        @error('email')
+                            <span class="text-[#FF0000] text-[14px] mx-[20px]">{{ $message }}</span>
+                        @enderror
                         <input type="email" wire:model="email" placeholder="Email" class="mb-[20px] h-[42px] w-[345px] rounded-[8px] pl-16 pr-4 text-black placeholder:font-semibold placeholder:text-[#BFBFBF] mx-[20px] px-[20px]">
                     </form>
                 </section>
@@ -47,7 +58,9 @@
                             <p class="font-inter font-bold text-[#000000] mx-[20px] py-[-50px]">Subtotal</p>
                             <p class="font-inter font-bold text-[#000000] mx-[20px]">Rp {{ number_format($subtotal, 0, ',', '.') }}</p>
                         </div>
-                        <a href="/payment-success" wire:click="checkout" class="w-[142px] h-[47px] bg-[#00933B] text-[#FFFFFF] text-bold rounded-[9px] flex justify-center items-center mr-[20px] hover:bg-[#FFFFFF] hover:text-[#00933B] transition duration-300 ease">Bayar</a>
+                        <a href="#" wire:click.prevent="checkout" class="w-[142px] h-[47px] bg-[#00933B] text-[#FFFFFF] text-bold rounded-[9px] flex justify-center items-center mr-[20px] hover:bg-[#FFFFFF] hover:text-[#00933B] transition duration-300 ease">
+                            Bayar
+                        </a>
                     </div>
                 </section>
             @else

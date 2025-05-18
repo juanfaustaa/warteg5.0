@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaction_details', function (Blueprint $table) {
+            $table->id();
             $table->string('transactionid', 6);
             $table->string('menuid', 5);
             $table->integer('quantity');
 
-            $table->primary(['transactionid', 'menuid']);
             $table->foreign('transactionid')->references('transactionid')->on('transaction_headers')->onDelete('cascade');
             $table->foreign('menuid')->references('menuid')->on('ms_menus')->onDelete('cascade');
 
