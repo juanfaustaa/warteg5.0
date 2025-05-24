@@ -10,25 +10,21 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CheckoutPageTest extends TestCase
 {
-    // Helper function biar gak ulang-ulang bikin menu dummy
-    private function createDummyMenu()
+    private function getLatestMenu()
     {
-        return MsMenu::create([
-            'name' => 'Sego Goreng',
-            'price' => 15000,
-        ]);
+        return MsMenu::latest()->first();
     }
 
     public function test_checkout_success_with_valid_data()
     {
-        $menu = $this->createDummyMenu();
+        $menu = $this->getLatestMenu();
 
         Livewire::test(CheckoutPage::class)
             ->set('name', 'Budi')
             ->set('phone', '081234567890')
             ->set('email', 'budi@gmail.com')
             ->set('cartItems', [
-                ['menuid' => $menu->id, 'menuprice' => $menu->price, 'quantity' => 2],
+                ['menuid' => $menu->menuid, 'menuname' => $menu->menuname, 'menuprice' => $menu->price, 'quantity' => 2],
             ])
             ->call('checkout')
             ->assertRedirect('/payment-success');
@@ -36,14 +32,14 @@ class CheckoutPageTest extends TestCase
 
     public function test_checkout_fails_when_phone_invalid()
     {
-        $menu = $this->createDummyMenu();
+        $menu = $this->getLatestMenu();
 
         Livewire::test(CheckoutPage::class)
             ->set('name', 'Budi')
             ->set('phone', '071234567') // Salah (tidak mulai 08)
             ->set('email', 'budi@gmail.com')
             ->set('cartItems', [
-                ['menuid' => $menu->id, 'menuprice' => $menu->price, 'quantity' => 2],
+                ['menuid' => $menu->menuid, 'menuname' => $menu->menuname, 'menuprice' => $menu->price, 'quantity' => 2],
             ])
             ->call('checkout')
             ->assertHasErrors(['phone']);
@@ -51,14 +47,14 @@ class CheckoutPageTest extends TestCase
 
     public function test_checkout_fails_when_email_invalid()
     {
-        $menu = $this->createDummyMenu();
+        $menu = $this->getLatestMenu();
 
         Livewire::test(CheckoutPage::class)
             ->set('name', 'Budi')
             ->set('phone', '081234567890')
             ->set('email', 'budi@yahoo.com') // Salah (bukan @gmail.com)
             ->set('cartItems', [
-                ['menuid' => $menu->id, 'menuprice' => $menu->price, 'quantity' => 2],
+                ['menuid' => $menu->menuid, 'menuname' => $menu->menuname, 'menuprice' => $menu->menuprice, 'quantity' => 2],
             ])
             ->call('checkout')
             ->assertHasErrors(['email']);
@@ -66,14 +62,14 @@ class CheckoutPageTest extends TestCase
 
     public function test_checkout_fails_when_name_empty()
     {
-        $menu = $this->createDummyMenu();
+        $menu = $this->getLatestMenu();
 
         Livewire::test(CheckoutPage::class)
             ->set('name', '')
             ->set('phone', '081234567890')
             ->set('email', 'budi@gmail.com')
             ->set('cartItems', [
-                ['menuid' => $menu->id, 'menuprice' => $menu->price, 'quantity' => 2],
+                ['menuid' => $menu->menuid, 'menuname' => $menu->menuname, 'menuprice' => $menu->menuprice, 'quantity' => 2],
             ])
             ->call('checkout')
             ->assertHasErrors(['name']);
